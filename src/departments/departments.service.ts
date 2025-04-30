@@ -17,7 +17,7 @@ export class DepartmentsService {
 
     dept = await this.departmentRepo.save(dept)
 
-    if (sub_departments.length > 0 ) {
+    if (sub_departments && sub_departments.length > 0 ) {
       const sub_depts = sub_departments.map((dep: {name: string})=> {
         return {
           name: dep.name,

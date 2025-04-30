@@ -10,8 +10,6 @@ export class UsersService {
 
 
   async create(username: string, password: string) {
-
-
     let user = this.userRepo.create({
       username,
       password

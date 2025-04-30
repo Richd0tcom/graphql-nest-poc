@@ -21,7 +21,7 @@ export class CreateDepartmentInput {
   @Field(() => [SubDepartmentInput], { nullable: true })
   @ValidateNested({ each: true })
   // @Type(() => SubDepartmentInput)
-  sub_departments: SubDepartmentInput[];
+  sub_departments?: SubDepartmentInput[];
 }
 
 

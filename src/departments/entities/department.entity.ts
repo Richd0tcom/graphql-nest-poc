@@ -1,7 +1,8 @@
 import { ObjectType, Field,  ID } from '@nestjs/graphql';
-import { Column, CreateDateColumn, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 @ObjectType()
+@Entity('departments')
 export class Department {
   @Field(() => ID)
   @PrimaryGeneratedColumn('uuid')

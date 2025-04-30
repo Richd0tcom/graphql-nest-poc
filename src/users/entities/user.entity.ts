@@ -1,8 +1,6 @@
-// import { ObjectType, Field, ID } from "@nestjs/graphql";
-
-import { Field, ID } from "@nestjs/graphql";
+import { Field, ID, ObjectType } from "@nestjs/graphql";
 import { IsEmail, MinLength } from "class-validator";
-import { PrimaryGeneratedColumn, Column, Index, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { PrimaryGeneratedColumn, Column, Index, CreateDateColumn, UpdateDateColumn, Entity } from "typeorm";
 
 // @ObjectType()
 // export class User {
@@ -24,8 +22,9 @@ import { PrimaryGeneratedColumn, Column, Index, CreateDateColumn, UpdateDateColu
 //   updatedAt: Date;
 // }
 
+@ObjectType()
+@Entity('users')
 export class User {
-
   @Field(() => ID)
   @PrimaryGeneratedColumn('uuid')
   id: string;
