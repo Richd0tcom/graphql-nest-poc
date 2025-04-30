@@ -62,6 +62,7 @@ export class DepartmentsService {
   }
 
   async deleteDepartment(id: string) {
+    //this assumes only a single layer of nesting
     const d = await this.getDepartment(id)
     if (!d) {
       throw new NotFoundException("department not found")

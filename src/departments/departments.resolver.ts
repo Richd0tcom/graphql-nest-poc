@@ -26,7 +26,7 @@ export class DepartmentsResolver {
 
   @Query(() => Department)
   @UseGuards(JwtAuthGuard)
-  async getDepartment(@Args('id', { type: () => Int }) id: string): Promise<Department | null> {
+  async getDepartment(@Args('id', { type: () => String }) id: string): Promise<Department | null> {
     return this.departmentsService.getDepartment(id);
   }
 

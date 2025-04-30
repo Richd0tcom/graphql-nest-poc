@@ -9,6 +9,7 @@ export class Department {
   id: string;
 
 
+  @Field()
   @Column()
   name: string;
 
@@ -30,6 +31,7 @@ export class Department {
   parent?: Promise<Department>;
 
 
+  @Field(() => [Department], { nullable: true })
   @OneToMany(() => Department, department => department.parent, { lazy: true })
   sub_departments?: Promise<Department[]>;
 }

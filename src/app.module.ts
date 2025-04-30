@@ -8,9 +8,9 @@ import { AuthModule } from "./auth/auth.module";
 
 import { join } from "path";
 import { UsersModule } from "./users/users.module";
-import { DbModule } from "./db/db.module";
 import { DepartmentsModule } from './departments/departments.module';
 import { TypeOrmModule } from "@nestjs/typeorm";
+import { ApolloServerPluginLandingPageLocalDefault } from "@apollo/server/plugin/landingPage/default";
 
 @Module({
   imports: [
@@ -38,6 +38,8 @@ import { TypeOrmModule } from "@nestjs/typeorm";
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), "src/schema.gql"),
       sortSchema: true,
+      playground: false,
+      plugins: [ApolloServerPluginLandingPageLocalDefault()]
     }),
     AuthModule,
     UsersModule,
