@@ -23,7 +23,7 @@ A backend API for managing departments and sub-departments built with NestJS, Gr
 
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/Richd0tcom/graphql-nest-poc
    cd department-manager-api
    ```
 
@@ -59,7 +59,7 @@ A backend API for managing departments and sub-departments built with NestJS, Gr
 
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/Richd0tcom/graphql-nest-poc
    cd department-manager-api
    ```
 
@@ -85,19 +85,13 @@ This will create:
 ### Authentication
 
 - **Login**: Authenticate a user and get a JWT token
-  ```graphql
-  mutation {
-    login(input: {
-      username: "admin",
-      password: "admin123"
-    }) {
-      access_token
-      user {
-        id
-        username
-      }
-    }
-  }
+  ```curl
+ curl -X POST http://localhost:3000/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "test@example.com",
+    "password": "password123"
+  }'
   ```
 
 ### Department Management
@@ -122,19 +116,6 @@ This will create:
   }
   ```
 
-- **Get Departments**: Fetch all departments with their sub-departments
-  ```graphql
-  query {
-    getDepartments {
-      id
-      name
-      subDepartments {
-        id
-        name
-      }
-    }
-  }
-  ```
 
 - **Get Department**: Fetch a specific department by ID
   ```graphql
