@@ -70,15 +70,9 @@ A backend API for managing departments and sub-departments built with NestJS, Gr
 
 ## Database Seeding
 
-To seed the database with initial data:
+An user with username `elon` and password `password123` has been created for convinience.
+use this to log in to the dashboard
 
-```bash
-npm run seed
-```
-
-This will create:
-- An admin user with username `admin` and password `admin123`
-- Sample departments and sub-departments
 
 ## API Documentation
 
@@ -86,15 +80,16 @@ This will create:
 
 - **Login**: Authenticate a user and get a JWT token
   ```curl
- curl -X POST http://localhost:3000/auth/register \
+ curl -X POST http://localhost:3000/auth/login \
   -H "Content-Type: application/json" \
   -d '{
-    "username": "test@example.com",
+    "username": "elon",
     "password": "password123"
   }'
   ```
 
 ### Department Management
+use th
 
 - **Create Department**: Create a new department with optional sub-departments
   ```graphql

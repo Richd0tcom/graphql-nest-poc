@@ -31,7 +31,6 @@ export class User {
 
   @Field()
   @Column({ type: 'varchar', nullable: false, unique: true })
-  @IsEmail()
   @Index()
   @MinLength(2)
   username: string;
