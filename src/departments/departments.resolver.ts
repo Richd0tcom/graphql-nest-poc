@@ -18,11 +18,11 @@ export class DepartmentsResolver {
 
 
 
-  // @Query(() => [Department])
-  // @UseGuards(JwtAuthGuard)
-  // async getDepartments(): Promise<Department[]> {
-  //   return this.departmentService.findAll();
-  // }
+  @Query(() => [Department])
+  @UseGuards(JwtAuthGuard)
+  async getDepartments(): Promise<Department[]> {
+    return this.departmentsService.getDepartments()
+  }
 
   @Query(() => Department)
   @UseGuards(JwtAuthGuard)

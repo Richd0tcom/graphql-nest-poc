@@ -42,6 +42,15 @@ export class DepartmentsService {
     return dept
   }
 
+  async getDepartments() {
+    const dept = await this.departmentRepo.find({
+
+      relations: ["sub_departments"]
+    })
+
+    return dept
+  }
+
   async updateDepartment(dto: UpdateDepartmentInput) {
 
     const { id,  name } = dto
