@@ -30,6 +30,7 @@ export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Field()
   @Column({ type: 'varchar', nullable: false, unique: true })
   @IsEmail()
   @Index()
@@ -39,9 +40,11 @@ export class User {
   @Column({ type: 'varchar', nullable: false })
   password: string;
 
+  @Field()
   @CreateDateColumn({ type: 'timestamptz' })
   createdAt?: Date;
 
+  @Field()
   @UpdateDateColumn({ type: 'timestamptz' })
   updatedAt?: Date;
 }

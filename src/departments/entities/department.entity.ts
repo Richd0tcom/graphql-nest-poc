@@ -1,5 +1,5 @@
 import { ObjectType, Field,  ID } from '@nestjs/graphql';
-import { CreateDateColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 @ObjectType()
 export class Department {
@@ -8,9 +8,12 @@ export class Department {
   id: string;
 
 
+  @Column()
   name: string;
 
 
+  @Field({ nullable: true })
+  @Column({ nullable: true })
   parent_id: string;
 
 
@@ -20,9 +23,12 @@ export class Department {
   @UpdateDateColumn({ type: 'timestamptz' })
   updatedAt?: Date;
 
-  @ManyToOne(() => Department, department => department.sub_departments)
-  parent: Department;
-  
-  @OneToMany(() => Department, department => department.parent)
-  sub_departments: Department[];
+
+  @ManyToOne(() => Department, { nullable: true, lazy: true })
+  @JoinColumn({ name: 'parent_id' })
+  parent?: Promise<Department>;
+
+
+  @OneToMany(() => Department, department => department.parent, { lazy: true })
+  sub_departments?: Promise<Department[]>;
 }

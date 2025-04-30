@@ -8,10 +8,10 @@ import { UsersService } from "../users/users.service";
 import {
   CreateAuthInput,
   LoginInput,
-  BiometricLoginInput,
 } from "./dto/create-auth.input";
 import * as bcrypt from "bcrypt";
 import { AuthResponse } from "./entities/auth.entity";
+import { hash } from "bcrypt";
 
 @Injectable()
 export class AuthService {
@@ -21,19 +21,21 @@ export class AuthService {
   ) {}
 
   async register(registerInput: CreateAuthInput): Promise<AuthResponse> {
-    const { email, password } = registerInput;
+    const { username, password } = registerInput;
 
     // Check if the user already exists
-    const existingUser = await this.usersService.findByEmail(email);
+    const existingUser = await this.usersService.findByUsername(username);
     if (existingUser) {
       throw new ConflictException("User with this email already exists");
     }
 
+    const hashedPassword = await hash(password, 10)
+
     // Create a new user
-    const user = await this.usersService.create(email, password);
+    const user = await this.usersService.create(username, hashedPassword);
 
     // Generate JWT token
-    const token = this.jwtService.sign({ id: user.id, email: user.email });
+    const token = this.jwtService.sign({ id: user.id, username: user.username });
 
     return {
       token,
@@ -42,10 +44,10 @@ export class AuthService {
   }
 
   async login(loginInput: LoginInput): Promise<AuthResponse> {
-    const { email, password } = loginInput;
+    const { username, password } = loginInput;
 
     // Find the user by email
-    const user = await this.usersService.findByEmail(email);
+    const user = await this.usersService.findByUsername(username);
     if (!user) {
       throw new UnauthorizedException("Invalid credentials");
     }
@@ -57,57 +59,7 @@ export class AuthService {
     }
 
     // Generate JWT token
-    const token = this.jwtService.sign({ id: user.id, email: user.email });
-
-    return {
-      token,
-      user,
-    };
-  }
-
-  async biometricLogin(
-    biometricLoginInput: BiometricLoginInput,
-  ): Promise<AuthResponse> {
-    const { biometricKey } = biometricLoginInput;
-
-    // Find the user by biometric key
-    const user = await this.usersService.findByBiometricKey(biometricKey);
-    if (!user) {
-      throw new UnauthorizedException("Invalid biometric key");
-    }
-
-    // Generate JWT token
-    const token = this.jwtService.sign({ id: user.id, email: user.email });
-
-    delete user.password;
-
-    return {
-      token,
-      user,
-    };
-  }
-
-  async addBiometricKey(
-    userId: string,
-    biometricKey: string,
-  ): Promise<AuthResponse> {
-    // Check if biometric key is already in use
-    const existingUserWithKey =
-      await this.usersService.findByBiometricKey(biometricKey);
-    if (existingUserWithKey) {
-      throw new ConflictException("Biometric key already in use");
-    }
-
-    // Update user with biometric key
-    const user = await this.usersService.updateBiometricKey(
-      userId,
-      biometricKey,
-    );
-
-    // Generate JWT token
-    const token = this.jwtService.sign({ id: user.id, email: user.email });
-
-    delete user.password;
+    const token = this.jwtService.sign({ id: user.id, username: user.username });
 
     return {
       token,

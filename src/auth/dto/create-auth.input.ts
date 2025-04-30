@@ -1,11 +1,11 @@
 import { InputType, Field } from "@nestjs/graphql";
-import { IsEmail, IsNotEmpty, MinLength } from "class-validator";
+import { IsEmail, MinLength } from "class-validator";
 
 @InputType()
 export class CreateAuthInput {
   @Field()
   @IsEmail()
-  email: string;
+  username: string;
 
   @Field()
   @MinLength(7)
@@ -16,16 +16,11 @@ export class CreateAuthInput {
 export class LoginInput {
   @Field()
   @IsEmail()
-  email: string;
+  username: string;
 
   @Field()
   @MinLength(7)
   password: string;
 }
 
-@InputType()
-export class BiometricLoginInput {
-  @Field()
-  @IsNotEmpty()
-  biometricKey: string;
-}
+

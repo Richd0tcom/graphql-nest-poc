@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateDepartmentInput } from './dto/create-department.input';
 import { UpdateDepartmentInput } from './dto/update-department.input';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -18,7 +18,7 @@ export class DepartmentsService {
     dept = await this.departmentRepo.save(dept)
 
     if (sub_departments.length > 0 ) {
-      const sub_depts = sub_departments.map((dep: any)=> {
+      const sub_depts = sub_departments.map((dep: {name: string})=> {
         return {
           name: dep.name,
           parent_id: dept.id
@@ -45,15 +45,37 @@ export class DepartmentsService {
   async updateDepartment(dto: UpdateDepartmentInput) {
 
     const { id,  name } = dto
-    const dept  = await this.departmentRepo.update(id, {
+    const dept = await this.departmentRepo.findOne({
+      where: {
+        id
+      }
+    })
+
+    if (!dept) {
+      throw new NotFoundException("department not found")
+    }
+    const result  = await this.departmentRepo.update(id, {
       name
     })
 
-    return dept
+    return result.raw as Department
   }
 
   async deleteDepartment(id: string) {
-    
+    const d = await this.getDepartment(id)
+    if (!d) {
+      throw new NotFoundException("department not found")
+    }
+
+    const sub_departments = await this.departmentRepo.find({
+      where: {
+        parent_id: id
+      }
+    })
+    await this.departmentRepo.remove(sub_departments)
+    await this.departmentRepo.remove(d)
+
+    return true
   }
 
 }
