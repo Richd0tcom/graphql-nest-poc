@@ -21,12 +21,13 @@ type Department {
 
 type Mutation {
   createDepartment(createDepartmentInput: CreateDepartmentInput!): Department!
-  deleteDepartment(id: Int!): Boolean!
-  updateDepartment(UpdateDepartmentInput: UpdateDepartmentInput!): Department!
+  deleteDepartment(id: String!): Boolean!
+  updateDepartment(updateDepartmentInput: UpdateDepartmentInput!): Department!
 }
 
 type Query {
   getDepartment(id: String!): Department!
+  getDepartments: [Department!]!
   me: User!
 }
 

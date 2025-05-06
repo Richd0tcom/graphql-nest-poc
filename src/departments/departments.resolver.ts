@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { DepartmentsService } from './departments.service';
 import { Department } from './entities/department.entity';
 import { CreateDepartmentInput } from './dto/create-department.input';
@@ -34,7 +34,7 @@ export class DepartmentsResolver {
   @Mutation(() => Department)
   @UseGuards(JwtAuthGuard)
   async updateDepartment(
-    @Args('UpdateDepartmentInput') updateDepartmentInput: UpdateDepartmentInput,
+    @Args('updateDepartmentInput') updateDepartmentInput: UpdateDepartmentInput,
   ): Promise<Department> {
     return this.departmentsService.updateDepartment(updateDepartmentInput);
   }
@@ -42,7 +42,7 @@ export class DepartmentsResolver {
   @Mutation(() => Boolean)
   @UseGuards(JwtAuthGuard)
   async deleteDepartment(
-    @Args('id', { type: () => Int }) id: string,
+    @Args('id', { type: () => String }) id: string,
   ): Promise<boolean> {
     return this.departmentsService.deleteDepartment(id);
   }

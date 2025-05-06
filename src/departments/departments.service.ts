@@ -44,7 +44,6 @@ export class DepartmentsService {
 
   async getDepartments() {
     const dept = await this.departmentRepo.find({
-
       relations: ["sub_departments"]
     })
 
@@ -54,7 +53,7 @@ export class DepartmentsService {
   async updateDepartment(dto: UpdateDepartmentInput) {
 
     const { id,  name } = dto
-    const dept = await this.departmentRepo.findOne({
+    let dept = await this.departmentRepo.findOne({
       where: {
         id
       }
@@ -63,11 +62,17 @@ export class DepartmentsService {
     if (!dept) {
       throw new NotFoundException("department not found")
     }
-    const result  = await this.departmentRepo.update(id, {
+     await this.departmentRepo.update(id, {
       name
     })
 
-    return result.raw as Department
+    dept = await this.departmentRepo.findOne({
+      where: {
+        id
+      }
+    })
+
+    return dept as Department
   }
 
   async deleteDepartment(id: string) {

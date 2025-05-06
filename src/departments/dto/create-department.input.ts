@@ -1,5 +1,5 @@
 import { InputType, Field } from '@nestjs/graphql';
-import { IsNotEmpty, MinLength, ValidateNested } from 'class-validator';
+import { IsNotEmpty, MinLength, ValidateIf, ValidateNested } from 'class-validator';
 
 
 
@@ -19,9 +19,10 @@ export class CreateDepartmentInput {
   name: string
 
   @Field(() => [SubDepartmentInput], { nullable: true })
+  @ValidateIf((obj) => obj.sub_departments !== null && obj.sub_departments !== undefined)
   @ValidateNested({ each: true })
   // @Type(() => SubDepartmentInput)
-  sub_departments?: SubDepartmentInput[];
+  sub_departments?: SubDepartmentInput[] | null;
 }
 
 
